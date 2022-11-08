@@ -2,6 +2,9 @@
 <form name="publish">
   <input type="text" name="message" maxlength="50"/>
   <input type="submit" value="Send"/>
+  <button  onclick="sendMessage('Привет Глеб!!!')">Поприветствовать Глеба</button>
+  <button  onclick="sendMessage('Пока Глеб!!!')">Попращаться с Глебом</button>
+  <button  onclick="sendMessage('Спасибо за митапы Глеб!!!')">Поблагодарить Глеба</button>
 </form>
 
 <div id="messages"></div>
@@ -35,5 +38,9 @@ function showMessage(message) {
   let messageElem = document.createElement('div');
   messageElem.textContent = message;
   document.getElementById('messages').prepend(messageElem);
+}
+
+function sendMessage(message) {
+  socket.send(message);
 }
 </script>
