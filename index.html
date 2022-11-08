@@ -1,7 +1,7 @@
 <!doctype html>
 <form name="publish">
   <input type="text" name="message" maxlength="50"/>
-  <input type="submit" value="Send"/>
+  <input type="submit" value="Send"  onclick="sendMessage(this.message.value)"/>
   <button  onclick="sendMessage('Привет Глеб!!!')">Поприветствовать Глеба</button>
   <button  onclick="sendMessage('Пока Глеб!!!')">Попращаться с Глебом</button>
   <button  onclick="sendMessage('Спасибо за митапы Глеб!!!')">Поблагодарить Глеба</button>
@@ -16,14 +16,6 @@ let url = location.host == 'localhost' ?
   `wss://javascript.info/article/websocket/chat/ws`; // боевая интеграция с javascript.info
 
 let socket = new WebSocket(url);
-
-// отправка сообщения из формы
-document.forms.publish.onsubmit = function() {
-  let outgoingMessage = this.message.value;
-
-  socket.send(outgoingMessage);
-  return false;
-};
 
 // прослушка входящих сообщений
 socket.onmessage = function(event) {
@@ -41,6 +33,7 @@ function showMessage(message) {
 }
 
 function sendMessage(message) {
+  this.message.value = 0;
   socket.send(message);
 }
 </script>
