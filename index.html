@@ -1,7 +1,7 @@
 <!doctype html>
 <form name="publish">
-  <input type="text" name="message" maxlength="50"/>
-  <input type="submit" value="Send"  onclick="sendMessage(this.message.value)"/>
+  <input type="text" id="message" name="message" maxlength="50"/>
+  <input type="submit" value="Send"  onclick="sendMessage(document.querySelector('#message').value)"/>
   <button  onclick="sendMessage('Привет Глеб!!!')">Поприветствовать Глеба</button>
   <button  onclick="sendMessage('Пока Глеб!!!')">Попращаться с Глебом</button>
   <button  onclick="sendMessage('Спасибо за митапы Глеб!!!')">Поблагодарить Глеба</button>
@@ -16,6 +16,7 @@ let url = location.host == 'localhost' ?
   `wss://javascript.info/article/websocket/chat/ws`; // боевая интеграция с javascript.info
 
 let socket = new WebSocket(url);
+
 
 // прослушка входящих сообщений
 socket.onmessage = function(event) {
