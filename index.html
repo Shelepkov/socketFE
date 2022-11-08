@@ -1,39 +1,42 @@
 <!doctype html>
-<form name="publish">
-  <input type="text" id="message" name="message" maxlength="50"/>
-  <input type="submit" value="Send"  onclick="sendMessage(document.querySelector('#message').value)"/>
-  <button  onclick="sendMessage('Привет Глеб!!!')">Поприветствовать Глеба</button>
-  <button  onclick="sendMessage('Пока Глеб!!!')">Попращаться с Глебом</button>
-  <button  onclick="sendMessage('Спасибо за митапы Глеб!!!')">Поблагодарить Глеба</button>
-</form>
+<input
+        type="text"
+        id="message"
+        name="message"
+        maxlength="50"
+/>
+<button onclick="sendMessage(document.querySelector('#message').value)"/>
+<button onclick="sendMessage('Привет Глеб!!!')">Поприветствовать Глеба</button>
+<button onclick="sendMessage('Пока Глеб!!!')">Попращаться с Глебом</button>
+<button onclick="sendMessage('Спасибо за митапы Глеб!!!')">Поблагодарить Глеба</button>
+
 
 <div id="messages"></div>
 
 <script>
-let url = location.host == 'localhost' ?
-  'ws://localhost:8080/ws' : location.host == 'javascript.local' ?
-  `ws://javascript.local/article/websocket/chat/ws` : // интеграция для разработки с локальным сайтом
-  `wss://javascript.info/article/websocket/chat/ws`; // боевая интеграция с javascript.info
+    let url = location.host == 'localhost' ?
+        'ws://localhost:8080/ws' : location.host == 'javascript.local' ?
+            `ws://javascript.local/article/websocket/chat/ws` : // интеграция для разработки с локальным сайтом
+            `wss://javascript.info/article/websocket/chat/ws`; // боевая интеграция с javascript.info
 
-let socket = new WebSocket(url);
+    let socket = new WebSocket(url);
 
+    // прослушка входящих сообщений
+    socket.onmessage = function (event) {
+        let incomingMessage = event.data;
+        showMessage(incomingMessage);
+    };
 
-// прослушка входящих сообщений
-socket.onmessage = function(event) {
-  let incomingMessage = event.data;
-  showMessage(incomingMessage);
-};
+    socket.onclose = event => console.log(`Closed ${event.code}`);
 
-socket.onclose = event => console.log(`Closed ${event.code}`);
+    // отображение информации в div#messages
+    function showMessage(message) {
+        let messageElem = document.createElement('div');
+        messageElem.textContent = message;
+        document.getElementById('messages').prepend(messageElem);
+    }
 
-// отображение информации в div#messages
-function showMessage(message) {
-  let messageElem = document.createElement('div');
-  messageElem.textContent = message;
-  document.getElementById('messages').prepend(messageElem);
-}
-
-function sendMessage(message) {
-  socket.send(message);
-}
+    function sendMessage(message) {
+        socket.send(message);
+    }
 </script>
